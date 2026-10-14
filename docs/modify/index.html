@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://goloveshin.github.io/multi_index_lookup_doc/modify/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Modifying a record - multi_index_lookup</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Modifying a record";
+        var mkdocs_page_input_path = "modify.md";
+        var mkdocs_page_url = "/multi_index_lookup_doc/modify/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> multi_index_lookup
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">The problem</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../getting-started/">Getting started</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../user-side/">Your own container class</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Guide</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../lookup/">Finding a record</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../ranges/">Finding ranges</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Modifying a record</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#what-can-go-wrong">What can go wrong</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#try_find_by_and_modify">try_find_by_and_modify</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#with-a-rollback-function">With a rollback function</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#find_by_and_modify">find_by_and_modify</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#which-form-to-use">Which form to use</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#changing-a-field-that-is-not-a-key">Changing a field that is not a key</a>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../reference/">Reference</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">multi_index_lookup</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Guide</li>
+      <li class="breadcrumb-item active">Modifying a record</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/goloveshin/multi_index_lookup_doc/edit/main/source/modify.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="modifying-a-record">Modifying a record<a class="headerlink" href="#modifying-a-record" title="Permanent link">&para;</a></h1>
+<p>The records of a Boost.MultiIndex container are <code>const</code>, because a key that changes under an index would break it. To change a record you ask the index to do it: <code>index.modify(iterator, modifier)</code>. The index takes the record out of its position, calls the modifier and puts the record back where the new keys say.</p>
+<p>The library finds the record by the key and does this for you, and reports what happened.</p>
+<h2 id="what-can-go-wrong">What can go wrong<a class="headerlink" href="#what-can-go-wrong" title="Permanent link">&para;</a></h2>
+<p>Changing a record can make it clash with another one. For example, a unique index already has a record with the new key. Boost.MultiIndex cannot keep both, so <code>modify</code> returns <code>false</code>.</p>
+<p>What happens to the record depends on the form of <code>modify</code>:</p>
+<table>
+<thead>
+<tr>
+<th>call</th>
+<th>on a clash</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>modify(it, modifier)</code></td>
+<td><strong>the record is erased</strong> from the container</td>
+</tr>
+<tr>
+<td><code>modify(it, modifier, rollback)</code></td>
+<td><code>rollback</code> is called to restore the record, and the record stays</td>
+</tr>
+</tbody>
+</table>
+<p>If the modifier itself throws, Boost.MultiIndex erases the record and the exception goes on.</p>
+<p>The library has both forms.</p>
+<h2 id="try_find_by_and_modify"><code>try_find_by_and_modify</code><a class="headerlink" href="#try_find_by_and_modify" title="Permanent link">&para;</a></h2>
+<pre><code class="language-cpp">const auto result = container.try_find_by_and_modify&lt;by_vd&gt;(
+    3,
+    [](record_t&amp; record){ record.name = &quot;orders&quot;; }
+);
+</code></pre>
+<p>It finds the record by the key and calls the modifier with the record. The result is <code>modify_result_et</code>:</p>
+<table>
+<thead>
+<tr>
+<th>result</th>
+<th>meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>absent</code></td>
+<td>there is no record with the key, nothing is changed</td>
+</tr>
+<tr>
+<td><code>modified</code></td>
+<td>the record is changed</td>
+</tr>
+<tr>
+<td><code>rejected</code></td>
+<td>the change broke an index, see below</td>
+</tr>
+</tbody>
+</table>
+<p>The enumeration is <code>multi_index_lookup::modify_result_et</code>. It is also available in the class as <code>container_t::modify_result_et</code>, so a class that derives from <code>container_extended_t</code> can write <code>modify_result_et::absent</code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>With this form, <code>rejected</code> means that <strong>the record is gone</strong>. Boost.MultiIndex erased it. If that is not acceptable, use the form with the rollback function.</p>
+</div>
+<h2 id="with-a-rollback-function">With a rollback function<a class="headerlink" href="#with-a-rollback-function" title="Permanent link">&para;</a></h2>
+<pre><code class="language-cpp">const auto result = container.try_find_by_and_modify&lt;by_vd&gt;(
+    3,
+    // the change
+    [](record_t&amp; record){ record.vd = 4; },
+    // return the record to the state before the change
+    [](record_t&amp; record){ record.vd = 3; }
+);
+</code></pre>
+<p>If the new <code>vd</code> is already taken, the rollback function returns the record to <code>vd</code> 3, and the record stays in the container. The result is <code>rejected</code>: the change was refused, and nothing is lost.</p>
+<p>The rollback function must really restore the record. If the indices are still broken after it, Boost.MultiIndex erases the record, as in the form without a rollback.</p>
+<p>The rollback function is called only for <code>rejected</code>. It is not called for <code>absent</code> and <code>modified</code>.</p>
+<h2 id="find_by_and_modify"><code>find_by_and_modify</code><a class="headerlink" href="#find_by_and_modify" title="Permanent link">&para;</a></h2>
+<p>Calls a function for each outcome that is not <code>modified</code>:</p>
+<pre><code class="language-cpp">container.find_by_and_modify&lt;by_vd&gt;(
+    3,
+    // on_absent
+    [&amp;]{ throw std::runtime_error(&quot;no aggregate 3&quot;); },
+    // on_rejected
+    [&amp;]{ throw std::runtime_error(&quot;cannot change aggregate 3&quot;); },
+    // the change
+    [](record_t&amp; record){ record.vd = 4; }
+);
+</code></pre>
+<ul>
+<li><code>on_absent()</code> is called when there is no record.</li>
+<li><code>on_rejected()</code> is called when the change was rejected.</li>
+<li>Nothing is called when the record is modified.</li>
+</ul>
+<p>Unlike <code>find_by_or_throw</code>, these functions do not have to throw. If they return, <code>find_by_and_modify</code> returns, and the caller can look at its own state.</p>
+<p>There is an overload with the rollback function as the last argument:</p>
+<pre><code class="language-cpp">container.find_by_and_modify&lt;by_vd&gt;(
+    3,
+    on_absent,
+    on_rejected,
+    [](record_t&amp; record){ record.vd = 4; },
+    [](record_t&amp; record){ record.vd = 3; }
+);
+</code></pre>
+<p>With it, a rejected change leaves the record in the container, and <code>on_rejected</code> is called after the rollback.</p>
+<h2 id="which-form-to-use">Which form to use<a class="headerlink" href="#which-form-to-use" title="Permanent link">&para;</a></h2>
+<ul>
+<li>If the changed fields are not keys of a unique index, a change cannot be rejected. The simple form is enough.</li>
+<li>If a change can clash with another record and losing the record is a bug, use a rollback function.</li>
+<li>If a clash means that the record must go, the form without a rollback does exactly that, and <code>rejected</code> tells you that it happened.</li>
+</ul>
+<h2 id="changing-a-field-that-is-not-a-key">Changing a field that is not a key<a class="headerlink" href="#changing-a-field-that-is-not-a-key" title="Permanent link">&para;</a></h2>
+<p>When no index uses the field as a key, you do not need <code>modify</code>. See <code>to_non_const</code> in <a href="../lookup/#to_non_const">Finding a record</a>.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../ranges/" class="btn btn-neutral float-left" title="Finding ranges"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../reference/" class="btn btn-neutral float-right" title="Reference">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>Distributed under the Boost Software License, Version 1.0.</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/goloveshin/multi_index_lookup_doc" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../ranges/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../reference/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,28 @@
+site_name: multi_index_lookup
+site_description: A small header-only wrapper around Boost.MultiIndex that adds lookup by index tag
+site_url: https://goloveshin.github.io/multi_index_lookup_doc/
+repo_url: https://github.com/goloveshin/multi_index_lookup_doc
+edit_uri: edit/main/source/
+copyright: Distributed under the Boost Software License, Version 1.0.
+
+docs_dir: source
+site_dir: docs
+
+theme:
+  name: readthedocs
+  navigation_depth: 3
+
+markdown_extensions:
+  - admonition
+  - toc:
+      permalink: true
+
+nav:
+  - The problem: index.md
+  - Getting started: getting-started.md
+  - Your own container class: user-side.md
+  - Guide:
+      - Finding a record: lookup.md
+      - Finding ranges: ranges.md
+      - Modifying a record: modify.md
+  - Reference: reference.md

@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://goloveshin.github.io/multi_index_lookup_doc/reference/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Reference - multi_index_lookup</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Reference";
+        var mkdocs_page_input_path = "reference.md";
+        var mkdocs_page_url = "/multi_index_lookup_doc/reference/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> multi_index_lookup
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">The problem</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../getting-started/">Getting started</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../user-side/">Your own container class</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Guide</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../lookup/">Finding a record</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../ranges/">Finding ranges</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../modify/">Modifying a record</a>
+                  </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Reference</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#container_extended_t">container_extended_t</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#types">Types</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#finding-a-record">Finding a record</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#finding-ranges">Finding ranges</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#modifying-a-record">Modifying a record</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#to_non_const">to_non_const</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#modify_result_et">modify_result_et</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#concepts">Concepts</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">multi_index_lookup</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Reference</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/goloveshin/multi_index_lookup_doc/edit/main/source/reference.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="reference">Reference<a class="headerlink" href="#reference" title="Permanent link">&para;</a></h1>
+<p>The header is <code>&lt;multi_index_lookup.hpp&gt;</code>. Everything is in <code>namespace multi_index_lookup</code>.</p>
+<h2 id="container_extended_t"><code>container_extended_t</code><a class="headerlink" href="#container_extended_t" title="Permanent link">&para;</a></h2>
+<pre><code class="language-cpp">template &lt;typename MultiIndexContainer&gt;
+class container_extended_t : public MultiIndexContainer;
+</code></pre>
+<p>A Boost.MultiIndex container plus lookup by index tag. <code>MultiIndexContainer</code> is a <code>boost::multi_index_container</code>. The class has no data of its own, and the constructors of <code>MultiIndexContainer</code> are inherited.</p>
+<p>In the tables below <code>ByTag</code> is the tag of an index, <code>Value</code> is a key (anything the index accepts), and <code>Index</code> is <code>index_by_t&lt;ByTag&gt;</code>.</p>
+<h3 id="types">Types<a class="headerlink" href="#types" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>base_t</code></td>
+<td><code>MultiIndexContainer</code></td>
+</tr>
+<tr>
+<td><code>record_t</code></td>
+<td>the type of the records, <code>MultiIndexContainer::value_type</code></td>
+</tr>
+<tr>
+<td><code>record_crt</code></td>
+<td><code>std::reference_wrapper&lt;const record_t&gt;</code></td>
+</tr>
+<tr>
+<td><code>record_ocrt</code></td>
+<td><code>std::optional&lt;record_crt&gt;</code></td>
+</tr>
+<tr>
+<td><code>record_rt</code></td>
+<td><code>std::reference_wrapper&lt;record_t&gt;</code></td>
+</tr>
+<tr>
+<td><code>record_ort</code></td>
+<td><code>std::optional&lt;record_rt&gt;</code></td>
+</tr>
+<tr>
+<td><code>index_by_t&lt;ByTag&gt;</code></td>
+<td>the type of the index with the tag</td>
+</tr>
+<tr>
+<td><code>iterator_by_t&lt;ByTag&gt;</code></td>
+<td>the iterator of that index</td>
+</tr>
+<tr>
+<td><code>iterator_by_ot&lt;ByTag&gt;</code></td>
+<td><code>std::optional&lt;iterator_by_t&lt;ByTag&gt;&gt;</code></td>
+</tr>
+<tr>
+<td><code>range_by_t&lt;ByTag, Value&gt;</code></td>
+<td>the range that <code>equal_range_by</code> returns for the key type <code>Value</code></td>
+</tr>
+<tr>
+<td><code>modify_result_et</code></td>
+<td><code>multi_index_lookup::modify_result_et</code>, see below</td>
+</tr>
+</tbody>
+</table>
+<p>The suffixes: <code>_t</code> a type, <code>_et</code> an enumeration, <code>_crt</code> a <code>std::reference_wrapper</code> to <code>const</code>, <code>_rt</code> a <code>std::reference_wrapper</code>, <code>_ot</code> a <code>std::optional</code>, <code>_ocrt</code> and <code>_ort</code> a <code>std::optional</code> of the corresponding wrapper.</p>
+<h3 id="finding-a-record">Finding a record<a class="headerlink" href="#finding-a-record" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>function</th>
+<th>result</th>
+<th>a missing record</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>try_find_iterator_by&lt;ByTag&gt;(value)</code></td>
+<td><code>iterator_by_ot&lt;ByTag&gt;</code></td>
+<td>empty</td>
+</tr>
+<tr>
+<td><code>find_iterator_by_or_throw&lt;ByTag&gt;(value, on_absent)</code></td>
+<td><code>iterator_by_t&lt;ByTag&gt;</code></td>
+<td><code>on_absent()</code> is called, it must throw</td>
+</tr>
+<tr>
+<td><code>try_find_by&lt;ByTag&gt;(value)</code></td>
+<td><code>record_ocrt</code></td>
+<td>empty</td>
+</tr>
+<tr>
+<td><code>find_by_or_throw&lt;ByTag&gt;(value, on_absent)</code></td>
+<td><code>const record_t&amp;</code></td>
+<td><code>on_absent()</code> is called, it must throw</td>
+</tr>
+<tr>
+<td><code>find_by_and_do&lt;ByTag&gt;(value, and_then_func, or_else_func)</code></td>
+<td>what the called function returns</td>
+<td><code>or_else_func(index)</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>and_then_func</code> is called as <code>and_then_func(index, iterator, record)</code>. If <code>on_absent</code> returns, <code>std::bad_optional_access</code> is thrown.</p>
+<p>See <a href="../lookup/">Finding a record</a>.</p>
+<h3 id="finding-ranges">Finding ranges<a class="headerlink" href="#finding-ranges" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>function</th>
+<th>result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>equal_range_by&lt;ByTag&gt;(value)</code></td>
+<td>a range of all the records with the key; empty if there are none</td>
+</tr>
+<tr>
+<td><code>range_between&lt;ByTag&gt;(lower, upper)</code></td>
+<td>a range from <code>lower_bound(lower)</code> to <code>upper_bound(upper)</code>; <code>upper</code> is included</td>
+</tr>
+<tr>
+<td><code>find_range_by_and_do&lt;ByTag&gt;(value, and_then_func, or_else_func)</code></td>
+<td>what the called function returns</td>
+</tr>
+</tbody>
+</table>
+<p>The ranges are <code>std::ranges::subrange</code> of the iterators of the index. <code>find_range_by_and_do</code> calls <code>and_then_func(index, range)</code> for a non-empty range and <code>or_else_func(index)</code> for an empty one.</p>
+<p>See <a href="../ranges/">Finding ranges</a>.</p>
+<h3 id="modifying-a-record">Modifying a record<a class="headerlink" href="#modifying-a-record" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>function</th>
+<th>result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>try_find_by_and_modify&lt;ByTag&gt;(value, modify_func)</code></td>
+<td><code>modify_result_et</code></td>
+</tr>
+<tr>
+<td><code>try_find_by_and_modify&lt;ByTag&gt;(value, modify_func, rollback_func)</code></td>
+<td><code>modify_result_et</code></td>
+</tr>
+<tr>
+<td><code>find_by_and_modify&lt;ByTag&gt;(value, on_absent, on_rejected, modify_func)</code></td>
+<td><code>void</code></td>
+</tr>
+<tr>
+<td><code>find_by_and_modify&lt;ByTag&gt;(value, on_absent, on_rejected, modify_func, rollback_func)</code></td>
+<td><code>void</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>modify_func(record)</code> changes the record. <code>rollback_func(record)</code> restores it if the change broke an index. <code>on_absent()</code> and <code>on_rejected()</code> do not have to throw.</p>
+<p>See <a href="../modify/">Modifying a record</a>.</p>
+<h3 id="to_non_const"><code>to_non_const</code><a class="headerlink" href="#to_non_const" title="Permanent link">&para;</a></h3>
+<pre><code class="language-cpp">static record_t&amp; to_non_const(const record_t&amp;);
+static record_rt to_non_const(const record_crt&amp;);
+static record_ort to_non_const(const record_ocrt&amp;);
+</code></pre>
+<p>Removes <code>const</code> from a found record. Change only the fields that no index uses as a key.</p>
+<h2 id="modify_result_et"><code>modify_result_et</code><a class="headerlink" href="#modify_result_et" title="Permanent link">&para;</a></h2>
+<pre><code class="language-cpp">enum class modify_result_et { absent, rejected, modified };
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>value</th>
+<th>meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>absent</code></td>
+<td>there is no record with the key, nothing is changed</td>
+</tr>
+<tr>
+<td><code>rejected</code></td>
+<td>the change broke an index. Without a rollback function the record is erased. With a rollback function it is restored.</td>
+</tr>
+<tr>
+<td><code>modified</code></td>
+<td>the record is changed</td>
+</tr>
+</tbody>
+</table>
+<h2 id="concepts">Concepts<a class="headerlink" href="#concepts" title="Permanent link">&para;</a></h2>
+<p>The concepts are in <code>namespace multi_index_lookup::detail</code>. They check the functions that you pass, so a wrong signature is reported at the call.</p>
+<table>
+<thead>
+<tr>
+<th>concept</th>
+<th>signature of the function</th>
+<th>used for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>can_be_and_then_function</code></td>
+<td><code>(Index&amp;, Index::iterator, const Record&amp;)</code></td>
+<td><code>and_then_func</code> of <code>find_by_and_do</code></td>
+</tr>
+<tr>
+<td><code>can_be_or_else_function</code></td>
+<td><code>(Index&amp;)</code></td>
+<td><code>or_else_func</code> of <code>find_by_and_do</code> and <code>find_range_by_and_do</code></td>
+</tr>
+<tr>
+<td><code>can_be_range_and_then_function</code></td>
+<td><code>(Index&amp;, Range&amp;)</code></td>
+<td><code>and_then_func</code> of <code>find_range_by_and_do</code></td>
+</tr>
+<tr>
+<td><code>can_be_modify_function</code></td>
+<td><code>(Record&amp;)</code></td>
+<td><code>modify_func</code></td>
+</tr>
+<tr>
+<td><code>can_be_rollback_function</code></td>
+<td><code>(Record&amp;)</code></td>
+<td><code>rollback_func</code></td>
+</tr>
+<tr>
+<td><code>can_be_throw_function</code></td>
+<td><code>()</code></td>
+<td><code>on_absent</code> and <code>on_rejected</code></td>
+</tr>
+</tbody>
+</table>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../modify/" class="btn btn-neutral float-left" title="Modifying a record"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>Distributed under the Boost Software License, Version 1.0.</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/goloveshin/multi_index_lookup_doc" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../modify/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://goloveshin.github.io/multi_index_lookup_doc/ranges/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Finding ranges - multi_index_lookup</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Finding ranges";
+        var mkdocs_page_input_path = "ranges.md";
+        var mkdocs_page_url = "/multi_index_lookup_doc/ranges/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> multi_index_lookup
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">The problem</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../getting-started/">Getting started</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../user-side/">Your own container class</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Guide</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../lookup/">Finding a record</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Finding ranges</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#equal_range_by">equal_range_by</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#range_between">range_between</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#find_range_by_and_do">find_range_by_and_do</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#ranges-and-algorithms">Ranges and algorithms</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../modify/">Modifying a record</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../reference/">Reference</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">multi_index_lookup</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Guide</li>
+      <li class="breadcrumb-item active">Finding ranges</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/goloveshin/multi_index_lookup_doc/edit/main/source/ranges.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="finding-ranges">Finding ranges<a class="headerlink" href="#finding-ranges" title="Permanent link">&para;</a></h1>
+<p>An index that is not unique can have many records with one key. An ordered index also keeps the records sorted, so records with keys from a span of values are next to each other. The library gives both as a range.</p>
+<p>A range is <code>std::ranges::subrange</code> of the iterators of the index. It does not copy the records, and an empty range means that nothing was found.</p>
+<h2 id="equal_range_by"><code>equal_range_by</code><a class="headerlink" href="#equal_range_by" title="Permanent link">&para;</a></h2>
+<p>All the records with the key:</p>
+<pre><code class="language-cpp">for (const auto&amp; record : container.equal_range_by&lt;by_name&gt;(&quot;user&quot;))
+{
+    // every aggregate named &quot;user&quot;
+}
+</code></pre>
+<p>If there are no such records, the range is empty. There is no "absent" state, so the function does not start with <code>try_</code>.</p>
+<p>The type of the range is <code>container_t::range_by_t&lt;by_name, std::string&gt;</code> for the key type <code>std::string</code>. It is the type to use in a signature when you need to write it:</p>
+<pre><code class="language-cpp">using range_t = container_t::range_by_t&lt;by_name, std::string&gt;;
+</code></pre>
+<h2 id="range_between"><code>range_between</code><a class="headerlink" href="#range_between" title="Permanent link">&para;</a></h2>
+<p>The records with the keys from <code>lower</code> to <code>upper</code>, <strong>both included</strong>:</p>
+<pre><code class="language-cpp">// the records of the index by_vd with the vd 1, 2 and 3
+const auto range = container.range_between&lt;by_vd&gt;(1, 3);
+</code></pre>
+<p>It works from <code>lower_bound(lower)</code> to <code>upper_bound(upper)</code> of the index. If no key is between, or if <code>lower</code> is greater than <code>upper</code>, the range is empty.</p>
+<p>For a composite key (<code>composite_key</code> of Boost.MultiIndex) the bounds can be partial tuples. This is how a range of "all the records of this parent" is taken.</p>
+<h2 id="find_range_by_and_do"><code>find_range_by_and_do</code><a class="headerlink" href="#find_range_by_and_do" title="Permanent link">&para;</a></h2>
+<p>Like <a href="../lookup/#find_by_and_do"><code>find_by_and_do</code></a>, for a range:</p>
+<pre><code class="language-cpp">const std::size_t count = container.find_range_by_and_do&lt;by_name&gt;(
+    &quot;user&quot;,
+    // the range is not empty
+    [](const auto&amp; index, auto&amp; range)
+    {
+        return static_cast&lt;std::size_t&gt;(std::ranges::distance(range));
+    },
+    // the range is empty
+    [](const auto&amp; index)
+    {
+        return std::size_t{ 0 };
+    }
+);
+</code></pre>
+<ul>
+<li><code>and_then_func(index, range)</code> is called when the range is not empty. <code>range</code> is a non-const lvalue.</li>
+<li><code>or_else_func(index)</code> is called when it is empty.</li>
+</ul>
+<p>Both functions must return the same type, and it is the result of <code>find_range_by_and_do</code>.</p>
+<h2 id="ranges-and-algorithms">Ranges and algorithms<a class="headerlink" href="#ranges-and-algorithms" title="Permanent link">&para;</a></h2>
+<p>The result is a standard range, so it works with the standard library and with range libraries:</p>
+<pre><code class="language-cpp">const auto range = container.equal_range_by&lt;by_name&gt;(&quot;user&quot;);
+
+const bool is_any = !range.empty();
+const auto count = std::ranges::distance(range);
+</code></pre>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A range is a view. It refers to the container, so do not keep it after the container changes. Erasing or modifying a record that the range covers can make the range invalid.</p>
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../lookup/" class="btn btn-neutral float-left" title="Finding a record"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../modify/" class="btn btn-neutral float-right" title="Modifying a record">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>Distributed under the Boost Software License, Version 1.0.</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/goloveshin/multi_index_lookup_doc" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../lookup/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../modify/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
