@@ -39,6 +39,9 @@ for (const auto& record : container.equal_range_by<by_name>("user")) { /* ... */
 
 // change a record and learn what happened
 const auto result = container.try_find_by_and_modify<by_name>("user", modifier);
+
+// erase one record with the key
+const bool is_erased = container.try_erase_by<by_name>("user");
 ```
 
 What you get:
@@ -47,6 +50,7 @@ What you get:
 - **A choice of what a missing record means.** An empty result, a function that throws, or a pair of functions for "found" and "not found".
 - **Ranges.** `std::ranges::subrange` of the index iterators, for one key or for a span of keys.
 - **An honest modify.** The result says whether the record was absent, rejected or modified. With a rollback function a rejected record is not lost.
+- **Erase by key.** `try_erase_by` erases one record with the key and returns whether a record was erased.
 
 It is a thin layer. It adds no data and no virtual functions, and it does not change how the container stores records.
 

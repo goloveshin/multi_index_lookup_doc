@@ -41,7 +41,15 @@ If the index is not unique, the result is one of the records with the key. To ge
 const auto found = container.try_find_iterator_by<by_vd>(3);
 ```
 
-The same, but the result is `std::optional` of the iterator of the index `by_vd`. Use it when you need the position, not only the record: for example to erase the record or to pass it to `modify`.
+The same, but the result is `std::optional` of the iterator of the index `by_vd`. Use it when you need the position, not only the record.
+
+## `try_erase_by`
+
+```cpp
+const bool is_erased = container.try_erase_by<by_vd>(3);
+```
+
+Erases one record with the key. Returns `true` when a record was erased and `false` when the key is absent. On an index that is not unique, `find` returns the first record with the key, and only that record is erased. Call it again to erase the next one.
 
 ## `find_by_or_throw`
 

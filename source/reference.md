@@ -45,6 +45,16 @@ The suffixes: `_t` a type, `_et` an enumeration, `_crt` a `std::reference_wrappe
 
 See [Finding a record](lookup.md).
 
+### Erasing a record
+
+| function | result | a missing record |
+| --- | --- | --- |
+| `try_erase_by<ByTag>(value)` | `bool`, `true` when a record was erased | `false`, nothing is erased |
+
+On an index that is not unique, this erases the first record with the key. Call it again to erase the next one.
+
+See [Finding a record](lookup.md).
+
 ### Finding ranges
 
 | function | result |
