@@ -2,7 +2,7 @@ site_name: multi_index_lookup
 site_description: A small header-only wrapper around Boost.MultiIndex that adds lookup by index tag
 site_url: https://goloveshin.github.io/multi_index_lookup_doc/
 repo_url: https://github.com/goloveshin/multi_index_lookup_doc
-edit_uri: edit/main/source/
+edit_uri: ''
 copyright: Distributed under the Boost Software License, Version 1.0.
 
 docs_dir: source

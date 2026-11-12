@@ -88,7 +88,6 @@
     <li><a href="." class="icon icon-home" aria-label="Docs"></a></li>
       <li class="breadcrumb-item active">The problem</li>
     <li class="wy-breadcrumbs-aside">
-          <a href="https://github.com/goloveshin/multi_index_lookup_doc/edit/main/source/index.md" class="icon icon-github"> Edit on GitHub</a>
     </li>
   </ul>
   <hr/>
@@ -126,6 +125,9 @@ for (const auto&amp; record : container.equal_range_by&lt;by_name&gt;(&quot;user
 
 // change a record and learn what happened
 const auto result = container.try_find_by_and_modify&lt;by_name&gt;(&quot;user&quot;, modifier);
+
+// erase one record with the key
+const bool is_erased = container.try_erase_by&lt;by_name&gt;(&quot;user&quot;);
 </code></pre>
 <p>What you get:</p>
 <ul>
@@ -133,6 +135,7 @@ const auto result = container.try_find_by_and_modify&lt;by_name&gt;(&quot;user&q
 <li><strong>A choice of what a missing record means.</strong> An empty result, a function that throws, or a pair of functions for "found" and "not found".</li>
 <li><strong>Ranges.</strong> <code>std::ranges::subrange</code> of the index iterators, for one key or for a span of keys.</li>
 <li><strong>An honest modify.</strong> The result says whether the record was absent, rejected or modified. With a rollback function a rejected record is not lost.</li>
+<li><strong>Erase by key.</strong> <code>try_erase_by</code> erases one record with the key and returns whether a record was erased.</li>
 </ul>
 <p>It is a thin layer. It adds no data and no virtual functions, and it does not change how the container stores records.</p>
 <h2 id="how-this-documentation-is-arranged">How this documentation is arranged<a class="headerlink" href="#how-this-documentation-is-arranged" title="Permanent link">&para;</a></h2>
@@ -194,5 +197,5 @@ const auto result = container.try_find_by_and_modify&lt;by_name&gt;(&quot;user&q
 
 <!--
 MkDocs version : 1.6.1
-Build Date UTC : 2026-10-14 11:16:38.064076+00:00
+Build Date UTC : 2026-11-12 09:46:20.560516+00:00
 -->

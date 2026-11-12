@@ -61,6 +61,8 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#try_find_iterator_by">try_find_iterator_by</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#try_erase_by">try_erase_by</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#find_by_or_throw">find_by_or_throw</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#find_by_and_do">find_by_and_do</a>
@@ -95,7 +97,6 @@
           <li class="breadcrumb-item">Guide</li>
       <li class="breadcrumb-item active">Finding a record</li>
     <li class="wy-breadcrumbs-aside">
-          <a href="https://github.com/goloveshin/multi_index_lookup_doc/edit/main/source/lookup.md" class="icon icon-github"> Edit on GitHub</a>
     </li>
   </ul>
   <hr/>
@@ -146,7 +147,11 @@ if (found)
 <h2 id="try_find_iterator_by"><code>try_find_iterator_by</code><a class="headerlink" href="#try_find_iterator_by" title="Permanent link">&para;</a></h2>
 <pre><code class="language-cpp">const auto found = container.try_find_iterator_by&lt;by_vd&gt;(3);
 </code></pre>
-<p>The same, but the result is <code>std::optional</code> of the iterator of the index <code>by_vd</code>. Use it when you need the position, not only the record: for example to erase the record or to pass it to <code>modify</code>.</p>
+<p>The same, but the result is <code>std::optional</code> of the iterator of the index <code>by_vd</code>. Use it when you need the position, not only the record.</p>
+<h2 id="try_erase_by"><code>try_erase_by</code><a class="headerlink" href="#try_erase_by" title="Permanent link">&para;</a></h2>
+<pre><code class="language-cpp">const bool is_erased = container.try_erase_by&lt;by_vd&gt;(3);
+</code></pre>
+<p>Erases one record with the key. Returns <code>true</code> when a record was erased and <code>false</code> when the key is absent. On an index that is not unique, <code>find</code> returns the first record with the key, and only that record is erased. Call it again to erase the next one.</p>
 <h2 id="find_by_or_throw"><code>find_by_or_throw</code><a class="headerlink" href="#find_by_or_throw" title="Permanent link">&para;</a></h2>
 <pre><code class="language-cpp">const auto&amp; record = container.find_by_or_throw&lt;by_vd&gt;(
     3,

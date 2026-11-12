@@ -69,6 +69,8 @@
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#finding-a-record">Finding a record</a>
     </li>
+    <li class="toctree-l3"><a class="reference internal" href="#erasing-a-record">Erasing a record</a>
+    </li>
     <li class="toctree-l3"><a class="reference internal" href="#finding-ranges">Finding ranges</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#modifying-a-record">Modifying a record</a>
@@ -100,7 +102,6 @@
     <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
       <li class="breadcrumb-item active">Reference</li>
     <li class="wy-breadcrumbs-aside">
-          <a href="https://github.com/goloveshin/multi_index_lookup_doc/edit/main/source/reference.md" class="icon icon-github"> Edit on GitHub</a>
     </li>
   </ul>
   <hr/>
@@ -210,6 +211,25 @@ class container_extended_t : public MultiIndexContainer;
 </tbody>
 </table>
 <p><code>and_then_func</code> is called as <code>and_then_func(index, iterator, record)</code>. If <code>on_absent</code> returns, <code>std::bad_optional_access</code> is thrown.</p>
+<p>See <a href="../lookup/">Finding a record</a>.</p>
+<h3 id="erasing-a-record">Erasing a record<a class="headerlink" href="#erasing-a-record" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>function</th>
+<th>result</th>
+<th>a missing record</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>try_erase_by&lt;ByTag&gt;(value)</code></td>
+<td><code>bool</code>, <code>true</code> when a record was erased</td>
+<td><code>false</code>, nothing is erased</td>
+</tr>
+</tbody>
+</table>
+<p>On an index that is not unique, this erases the first record with the key. Call it again to erase the next one.</p>
 <p>See <a href="../lookup/">Finding a record</a>.</p>
 <h3 id="finding-ranges">Finding ranges<a class="headerlink" href="#finding-ranges" title="Permanent link">&para;</a></h3>
 <table>
